@@ -2,148 +2,347 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Ajith R — Portfolio</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <link rel="stylesheet" href="styles.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Ajith R Portfolio</title>
+  <meta name="claude:viewport-fit-sides" content="cover">
+  <meta name="description" content="Ajith R, MERN stack developer. React, Node.js, Express and MongoDB projects, experience and contact details.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=Instrument+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
+  <style>
+  /* Layout: sticky slim header, split hero (intro left, API-response card right), then ruled sections with a label column and content column. */
+  :root {
+    --bg: #f4f6f8;
+    --surface: #ffffff;
+    --fg: #0f1722;
+    --muted: #55616f;
+    --line: #d9dee5;
+    --accent: #2646e8;
+    --accent-fg: #ffffff;
+    --accent-soft: #e5e9fd;
+    --ok: #17803d;
+    --code-bg: #0f1722;
+    --code-fg: #dbe3ee;
+    --code-key: #8fa6ff;
+    --code-str: #8fe0b0;
+    --code-dim: #7d8a9b;
+    --font-display: "Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+    --font-body: "Instrument Sans", "Segoe UI", system-ui, sans-serif;
+    --font-mono: "JetBrains Mono", ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #0c1118; --surface: #131a23; --fg: #e8edf3; --muted: #9aa6b4; --line: #26303c;
+      --accent: #8fa6ff; --accent-fg: #0c1118; --accent-soft: #1b2440; --ok: #5ccf8a;
+      --code-bg: #080c11; --code-fg: #dbe3ee; --code-key: #8fa6ff; --code-str: #8fe0b0; --code-dim: #6f7c8c;
+      color-scheme: dark;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #0c1118; --surface: #131a23; --fg: #e8edf3; --muted: #9aa6b4; --line: #26303c;
+    --accent: #8fa6ff; --accent-fg: #0c1118; --accent-soft: #1b2440; --ok: #5ccf8a;
+    --code-bg: #080c11; --code-fg: #dbe3ee; --code-key: #8fa6ff; --code-str: #8fe0b0; --code-dim: #6f7c8c;
+    color-scheme: dark;
+  }
+
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; scroll-padding-top: 72px; }
+  body {
+    background: var(--bg);
+    color: var(--fg);
+    font-family: var(--font-body);
+    font-size: 16px;
+    line-height: 1.6;
+    padding-left: max(16px, env(safe-area-inset-left, 0px));
+    padding-right: max(16px, env(safe-area-inset-right, 0px));
+    padding-block: 0 48px;
+    -webkit-font-smoothing: antialiased;
+    margin: 0;
+  }
+  body::before {
+    content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px);
+    z-index: 10; background: var(--bg);
+  }
+  a { color: inherit; }
+  a:focus-visible, button:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 4px; }
+  .wrap { max-width: 1080px; margin: 0 auto; }
+
+  /* header */
+  .top {
+    position: sticky; top: env(safe-area-inset-top, 0px); z-index: 9;
+    background: var(--bg);
+    border-bottom: 1px solid var(--line);
+  }
+  .top .wrap { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding-block: 14px; }
+  .brand { font-family: var(--font-display); font-weight: 700; font-size: 18px; text-decoration: none; letter-spacing: -0.01em; }
+  .brand span { color: var(--accent); }
+  nav { display: flex; gap: 22px; flex-wrap: wrap; justify-content: flex-end; }
+  nav a { text-decoration: none; font-size: 14px; color: var(--muted); font-weight: 500; }
+  nav a:hover { color: var(--fg); }
+
+  /* hero */
+  .hero { display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr); gap: 48px; padding-block: 72px 64px; align-items: center; }
+  .status {
+    display: inline-flex; align-items: center; gap: 10px; font-family: var(--font-mono); font-size: 13px;
+    color: var(--muted); border: 1px solid var(--line); background: var(--surface); padding: 6px 12px; border-radius: 999px;
+  }
+  .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--ok); }
+  h1 {
+    font-family: var(--font-display); font-weight: 700; font-size: clamp(44px, 7vw, 80px);
+    line-height: 0.98; letter-spacing: -0.03em; margin: 22px 0 18px; text-wrap: balance;
+  }
+  .role { font-family: var(--font-display); font-weight: 500; font-size: clamp(20px, 2.6vw, 26px); color: var(--accent); margin: 0 0 20px; }
+  .lede { font-size: 18px; color: var(--muted); max-width: 54ch; margin: 0 0 30px; }
+  .cta { display: flex; flex-wrap: wrap; gap: 12px; }
+  .btn {
+    display: inline-flex; align-items: center; gap: 8px; text-decoration: none; font-weight: 600; font-size: 15px;
+    padding: 12px 20px; border-radius: 8px; border: 1px solid var(--line); background: var(--surface); color: var(--fg); cursor: pointer; font-family: inherit;
+  }
+  .btn:hover { border-color: var(--fg); }
+  .btn.primary { background: var(--accent); color: var(--accent-fg); border-color: var(--accent); }
+  .btn.primary:hover { filter: brightness(1.08); }
+
+  .code {
+    background: var(--code-bg); color: var(--code-fg); border-radius: 12px; padding: 0; overflow: hidden;
+    font-family: var(--font-mono); font-size: 13.5px; line-height: 1.7; min-width: 0;
+    box-shadow: 0 1px 0 var(--line), 0 18px 40px -24px rgba(15, 23, 34, 0.5);
+  }
+  .code-bar { display: flex; justify-content: space-between; gap: 12px; padding: 12px 18px; border-bottom: 1px solid rgba(255,255,255,0.08); color: var(--code-dim); font-size: 12.5px; flex-wrap: wrap; }
+  .code-bar b { color: var(--code-fg); font-weight: 500; }
+  .code-bar .ok { color: var(--code-str); }
+  .code pre { margin: 0; padding: 16px 18px 20px; overflow-x: auto; white-space: pre; font: inherit; }
+  .k { color: var(--code-key); } .s { color: var(--code-str); } .d { color: var(--code-dim); }
+
+  /* sections */
+  section { border-top: 1px solid var(--line); padding-block: 56px; display: grid; grid-template-columns: 200px minmax(0, 1fr); gap: 32px; }
+  .label { font-family: var(--font-mono); font-size: 12.5px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--muted); padding-top: 6px; }
+  h2 { font-family: var(--font-display); font-size: clamp(26px, 3.4vw, 36px); letter-spacing: -0.02em; line-height: 1.15; margin: 0 0 24px; text-wrap: balance; }
+  h3 { font-family: var(--font-display); font-size: 22px; letter-spacing: -0.01em; margin: 0; line-height: 1.25; }
+  p { margin: 0 0 14px; }
+  .meta { font-family: var(--font-mono); font-size: 13px; color: var(--muted); }
+  ul.plain { list-style: none; margin: 0; padding: 0; display: grid; gap: 12px; }
+  ul.plain li { position: relative; padding-left: 22px; }
+  ul.plain li::before { content: ""; position: absolute; left: 0; top: 0.72em; width: 10px; height: 1px; background: var(--accent); }
+
+  .job-head { display: flex; justify-content: space-between; gap: 8px 24px; flex-wrap: wrap; align-items: baseline; margin-bottom: 18px; }
+
+  .proj { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 28px; display: grid; gap: 18px; min-width: 0; }
+  .proj + .proj { margin-top: 20px; }
+  .proj-head { display: flex; justify-content: space-between; gap: 12px 20px; flex-wrap: wrap; align-items: flex-start; }
+  .proj-desc { color: var(--muted); margin: 6px 0 0; }
+  .links { display: flex; gap: 10px; flex-wrap: wrap; }
+  .links a {
+    font-size: 14px; font-weight: 600; text-decoration: none; padding: 8px 14px; border-radius: 8px; border: 1px solid var(--line); background: var(--bg);
+  }
+  .links a.live { background: var(--accent); color: var(--accent-fg); border-color: var(--accent); }
+  .links a:hover { border-color: var(--fg); }
+  .tags { display: flex; flex-wrap: wrap; gap: 8px; margin: 0; padding: 0; list-style: none; }
+  .tags li { font-family: var(--font-mono); font-size: 12.5px; padding: 4px 10px; border-radius: 6px; background: var(--accent-soft); color: var(--fg); }
+
+  .skills { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 40px; margin: 0; }
+  .skills div { padding-block: 16px; border-top: 1px solid var(--line); min-width: 0; }
+  .skills dt { font-family: var(--font-mono); font-size: 12.5px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--accent); margin-bottom: 6px; }
+  .skills dd { margin: 0; }
+
+  .contact-list { display: grid; gap: 0; margin: 0 0 24px; }
+  .contact-list div { display: grid; grid-template-columns: 120px minmax(0, 1fr); gap: 16px; padding-block: 14px; border-top: 1px solid var(--line); align-items: baseline; }
+  .contact-list dt { font-family: var(--font-mono); font-size: 12.5px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); }
+  .contact-list dd { margin: 0; overflow-wrap: anywhere; }
+  .contact-list a { text-underline-offset: 3px; }
+
+  footer { border-top: 1px solid var(--line); padding-top: 24px; color: var(--muted); font-size: 14px; display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+
+  @media (max-width: 860px) {
+    .hero { grid-template-columns: minmax(0, 1fr); padding-block: 48px 40px; gap: 36px; }
+    section { grid-template-columns: minmax(0, 1fr); gap: 8px; padding-block: 44px; }
+    .skills { grid-template-columns: minmax(0, 1fr); }
+  }
+  @media (max-width: 520px) {
+    nav { gap: 14px; }
+    .proj { padding: 20px; }
+    .contact-list div { grid-template-columns: minmax(0, 1fr); gap: 2px; }
+  }
+  @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+  </style>
 </head>
 <body>
 
-  <header class="nav-bar">
-    <div class="nav-logo">Portfolio</div>
-    <nav class="nav-links">
-      <a href="#home">Home</a>
-      <a href="#about">About</a>
+<header class="top">
+  <div class="wrap">
+    <a class="brand" href="#top">Ajith<span>.</span>R</a>
+    <nav aria-label="Sections">
+      <a href="#experience">Experience</a>
       <a href="#projects">Projects</a>
+      <a href="#skills">Skills</a>
       <a href="#contact">Contact</a>
     </nav>
-  </header>
+  </div>
+</header>
 
-
-  <main>
-    <section class="hero" id="home">
-      <div class="hero-left">
-        <p class="greeting">I'm</p>
-        <h1 class="name">Ajith R</h1>
-        <p class="desc">Web developer passionate about creating elegant, user-friendly websites using HTML, CSS, JavaScript, Bootstrap, and Python.</p>
-
-        <div class="cta">
-          <a href="#contact" class="btn-primary-custom">Hire Me</a>
-
-
-          <a class="btn-outline-custom" href=" https://drive.google.com/file/d/1xB88K_QXy_xxiN8Syno61eieHQY7a_Sn/view?usp=drive_link">Download CV</a>
-        </div>
-
-        <div class="socials">
-          <a href="https://www.google.co.in/gmail/about/for-work/" target="_blank" class="Gmail" title="Instagram"><i class="fas fa-envelope"></i></a>
-          <a href="https://wa.me/" target="_blank" class="whatsapp" title="WhatsApp"><i class="fab fa-whatsapp"></i></a>
-          <a href="https://github.com" target="_blank" class="github" title="GitHub"><i class="fab fa-github"></i></a>
-          <a href="https://linkedin.com" target="_blank" class="linkedin" title="LinkedIn"><i class="fab fa-linkedin"></i></a>
-        </div>
+<main class="wrap" id="top">
+  <div class="hero">
+    <div>
+      <span class="status"><span class="dot" aria-hidden="true"></span>Immediate joiner · Open to Bangalore</span>
+      <h1>Ajith R</h1>
+      <p class="role">MERN Stack Developer</p>
+      <p class="lede">I build React interfaces, Node.js and Express APIs, and MongoDB-backed applications. Currently a Full Stack Developer Intern at Bridgeon Solutions in Kochi, working in an Agile team with Figma designs, code reviews and Git pull requests.</p>
+      <div class="cta">
+        <a class="btn primary" href="#projects">View projects</a>
+        <a class="btn" href="#contact">Get in touch</a>
       </div>
+    </div>
 
-      <div class="hero-right">
-        <img src="my pic.jpg" alt="Ajith R Profile Photo">
+    <div class="code" role="img" aria-label="Summary of Ajith R as an API response">
+      <div class="code-bar"><span><b>GET</b> /developer/ajith</span><span class="ok">200 OK</span></div>
+<pre><span class="d">{</span>
+  <span class="k">"name"</span>: <span class="s">"Ajith R"</span>,
+  <span class="k">"role"</span>: <span class="s">"MERN Stack Developer"</span>,
+  <span class="k">"location"</span>: <span class="s">"Kerala, India"</span>,
+  <span class="k">"relocate"</span>: <span class="s">"Bangalore"</span>,
+  <span class="k">"available"</span>: <span class="s">"immediately"</span>,
+  <span class="k">"frontend"</span>: [<span class="s">"React.js"</span>, <span class="s">"Redux Toolkit"</span>, <span class="s">"Tailwind CSS"</span>],
+  <span class="k">"backend"</span>: [<span class="s">"Node.js"</span>, <span class="s">"Express.js"</span>, <span class="s">"JWT"</span>],
+  <span class="k">"database"</span>: [<span class="s">"MongoDB"</span>, <span class="s">"Mongoose"</span>],
+  <span class="k">"payments"</span>: [<span class="s">"Stripe"</span>, <span class="s">"Razorpay"</span>],
+  <span class="k">"realtime"</span>: <span class="s">"Socket.IO"</span>
+<span class="d">}</span></pre>
+    </div>
+  </div>
+
+  <section id="experience">
+    <div class="label">Experience</div>
+    <div>
+      <div class="job-head">
+        <div>
+          <h3>Full Stack Developer Intern</h3>
+          <div class="meta">Bridgeon Solutions · Kochi</div>
+        </div>
+        <div class="meta">Oct 2025 – Present</div>
       </div>
-    </section>
+      <ul class="plain">
+        <li>Build and maintain MERN stack applications in an Agile team, with daily scrums, project meetings, code reviews and a Git/GitHub pull request workflow.</li>
+        <li>Convert Figma designs into responsive, cross-browser, mobile-first React.js interfaces using reusable components and Redux Toolkit, and optimize frontend performance for faster load and rendering.</li>
+        <li>Build RESTful APIs with Node.js and Express.js, with JWT authentication and role-based authorization for secure data exchange between frontend and backend.</li>
+        <li>Design and query MongoDB databases with Mongoose and aggregation pipelines, and structure services using MVC architecture.</li>
+        <li>Integrate third-party APIs and payment gateways, test and debug endpoints with Postman, and troubleshoot issues across the stack from UI to database.</li>
+      </ul>
+    </div>
+  </section>
 
-    
-    <section id="about" style="padding:60px 6vw;">
-      <h2>About</h2>
-      <p style="color:var(--muted);max-width:760px">
-        I’m a passionate web developer who enjoys crafting responsive and engaging websites. I’m constantly learning new technologies and building creative solutions that merge functionality and design.
-      </p>
-    </section>
+  <section id="projects">
+    <div class="label">Projects</div>
+    <div>
+      <h2>Two full-stack products, both live.</h2>
 
-    <section id="projects" class="projects">
-      <div class="container-lg">
-        <h2>Selected Projects</h2>
-        <div class="row g-4 mt-4">
-          <div class="col-md-6 col-lg-4">
-            <div class="project-card">
-              <img class="project-img" src="https://tse3.mm.bing.net/th/id/OIP.XUZIN6wAVxpPLXh9oMnIlAHaEK?pid=Api&P=0&h=180" alt="Agoda Clone">
-              <div class="project-body">
-                <h5>Agoda Clone</h5>
-                <p>A hotel booking website interface built using HTML, CSS, and JavaScript.</p>
-                <div class="tech-badges">
-                  <span class="tech">HTML</span>
-                  <span class="tech">CSS</span>
-                  <span class="tech">JS</span>
-                </div>
-              </div>
-            </div>
+      <article class="proj">
+        <div class="proj-head">
+          <div>
+            <h3>Flowly Finance</h3>
+            <p class="proj-desc">Smart finance application for loans, EMI schedules, customer profiles and financial documents.</p>
           </div>
-
-          <div class="col-md-6 col-lg-4">
-            <div class="project-card">
-              <img class="project-img" src="https://tse2.mm.bing.net/th/id/OIP.Upl-tS46zi-Qz-7S086tEQHaE8?pid=Api&P=0&h=180" alt="Responsive Navbar">
-              <div class="project-body">
-                <h5>Responsive Navbar</h5>
-                <p>Responsive navbar with smooth scrolling and a toggle menu for small screens.</p>
-                <div class="tech-badges">
-                  <span class="tech">HTML</span>
-                  <span class="tech">CSS</span>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div class="col-md-6 col-lg-4">
-            <div class="project-card">
-              <img class="project-img" src="https://tse4.mm.bing.net/th/id/OIP.Ohecnfmj5A-7v3JH6emQEAHaEG?pid=Api&P=0&h=180" alt="Portfolio Site">
-              <div class="project-body">
-                <h5>Portfolio Site</h5>
-                <p>This portfolio showcases my work and skills, designed with a clean modern theme.</p>
-                <div class="tech-badges">
-                  <span class="tech">HTML</span>
-                  <span class="tech">CSS</span>
-                  <span class="tech">JavaScript</span>
-                </div>
-              </div>
-            </div>
+          <div class="links">
+            <a class="live" href="https://user-frontend-three-nu.vercel.app" target="_blank" rel="noopener">Live site</a>
+            <a href="https://github.com/Flowly-Finance-App/Flowly-Finance-backend" target="_blank" rel="noopener">Code</a>
           </div>
         </div>
+        <ul class="plain">
+          <li>Loan application and review workflows with role-based access control using JWT, so only authorized roles can act on sensitive financial records.</li>
+          <li>Document pipeline that stores files securely on Cloudinary and uses OCR-based data extraction to automate KYC data capture.</li>
+          <li>EMI management with automated reminders through scheduled cron jobs, and Stripe integrated for payments.</li>
+        </ul>
+        <ul class="tags" aria-label="Technologies">
+          <li>React.js</li><li>Node.js</li><li>Express.js</li><li>MongoDB</li><li>Stripe</li><li>Cloudinary</li><li>OCR</li><li>Cron Jobs</li>
+        </ul>
+      </article>
+
+      <article class="proj">
+        <div class="proj-head">
+          <div>
+            <h3>PocketJob</h3>
+            <p class="proj-desc">MERN job portal with job posting, profile management and subscription plans.</p>
+          </div>
+          <div class="links">
+            <a class="live" href="https://pocketjob-project.vercel.app" target="_blank" rel="noopener">Live site</a>
+            <a href="https://github.com/ajithrajesh/Pocketjob-project" target="_blank" rel="noopener">Code</a>
+          </div>
+        </div>
+        <ul class="plain">
+          <li>JWT authentication and role-based authorization, with job posting and profile management.</li>
+          <li>Location-based search and filtering, backed by MongoDB aggregation pipelines for efficient querying.</li>
+          <li>Real-time notifications with Socket.IO, Razorpay subscriptions and Cloudinary file uploads.</li>
+          <li>Subscription reminders and expiry handling automated with cron jobs. Frontend deployed on Vercel.</li>
+        </ul>
+        <ul class="tags" aria-label="Technologies">
+          <li>React.js</li><li>REST APIs</li><li>MongoDB</li><li>Socket.IO</li><li>Razorpay</li><li>Cloudinary</li><li>Vercel</li>
+        </ul>
+      </article>
+    </div>
+  </section>
+
+  <section id="skills">
+    <div class="label">Skills</div>
+    <div>
+      <h2>The stack I work in.</h2>
+      <dl class="skills">
+        <div><dt>Frontend</dt><dd>React.js, Redux Toolkit, Tailwind CSS, Vite, responsive and mobile-first design, performance optimization. TypeScript and Next.js (basic).</dd></div>
+        <div><dt>Backend</dt><dd>Node.js, Express.js, RESTful API design, MVC architecture, JWT authentication, role-based authorization, cron jobs, Socket.IO.</dd></div>
+        <div><dt>Databases</dt><dd>MongoDB, Mongoose, data modeling, aggregation pipeline. SQL and MySQL (basic).</dd></div>
+        <div><dt>Integrations</dt><dd>Stripe, Razorpay, Cloudinary, OCR-based data extraction.</dd></div>
+        <div><dt>Deployment</dt><dd>Vercel, Render, Nginx, PM2. AWS EC2 (basic).</dd></div>
+        <div><dt>Core</dt><dd>JavaScript (ES6+), HTML5, CSS3, Git and GitHub, Postman, debugging, code reviews, Agile and Scrum, AI-assisted development.</dd></div>
+      </dl>
+    </div>
+  </section>
+
+  <section id="education">
+    <div class="label">Education</div>
+    <div>
+      <div class="job-head" style="margin-bottom:0">
+        <div>
+          <h3>Bachelor of Technology, Electrical and Electronics Engineering</h3>
+          <div class="meta">College of Engineering, Chennaur</div>
+        </div>
+        <div class="meta">2019 – 2023</div>
       </div>
-    </section>
+    </div>
+  </section>
 
-    <section id="contact" class="contact">
-      <h2>Contact</h2>
-      <p>Email: <a href="https://mail.google.com/mail/?view=cm&fs=1&to=ajithsriraj@gmail.com" target="_blank" style="color:var(--highlight)">ajithsriraj@gmail.com</a></p>
+  <section id="contact">
+    <div class="label">Contact</div>
+    <div>
+      <h2>Available to join immediately, on site in Bangalore.</h2>
+      <dl class="contact-list">
+        <div><dt>Email</dt><dd><a href="mailto:ajithsriraj@gmail.com">ajithsriraj@gmail.com</a></dd></div>
+        <div><dt>Phone</dt><dd>8921057876</dd></div>
+        <div><dt>GitHub</dt><dd><a href="https://github.com/ajithrajesh" target="_blank" rel="noopener">github.com/ajithrajesh</a></dd></div>
+        <div><dt>LinkedIn</dt><dd><a href="https://www.linkedin.com/in/ajith-r-a77519389" target="_blank" rel="noopener">linkedin.com/in/ajith-r-a77519389</a></dd></div>
+        <div><dt>LeetCode</dt><dd><a href="https://leetcode.com/u/ajithrajesh" target="_blank" rel="noopener">leetcode.com/u/ajithrajesh</a></dd></div>
+      </dl>
+      <button class="btn primary" type="button" id="copy-email">Copy email address</button>
+      <span class="meta" id="copy-status" role="status" style="margin-left:12px"></span>
+    </div>
+  </section>
 
-      <p>Phone: +91 8921057876</p>
-      <p>Location: Kochi, Kerala, India</p>
-
-      <form>
-        <input type="text" placeholder="Your Name" required>
-        <input type="email" placeholder="Your Email" required>
-        <textarea rows="3" placeholder="Your Message" required></textarea>
-        <button type="submit">Send Message</button>
-      </form>
-
-      <div style="margin-top:20px;">
-        <iframe src="https://www.google.com/maps?q=kochi,kerala&output=embed" ></iframe>
-      </div>
-    </section>
-  </main>
-
-  
   <footer>
-    <div>© 2025 Ajith R — All Rights Reserved</div>
-
-    <div class="footer-links">
-      <a href="#home">Home</a>
-      <a href="#about">About</a>
-      <a href="#projects">Projects</a>
-      <a href="#contact">Contact</a>
-    </div>
-
-    <div class="footer-socials">
-      <a href="https://instagram.com" target="_blank" class="instagram"><i class="fab fa-instagram"></i></a>
-      <a href="https://wa.me/" target="_blank" class="whatsapp"><i class="fab fa-whatsapp"></i></a>
-      <a href="https://github.com" target="_blank" class="github"><i class="fab fa-github"></i></a>
-      <a href="https://linkedin.com" target="_blank" class="linkedin"><i class="fab fa-linkedin"></i></a>
-    </div>
+    <span>Ajith R · MERN Stack Developer</span>
+    <span>Kerala, India</span>
   </footer>
+</main>
+
+<script>
+(function () {
+  var btn = document.getElementById('copy-email');
+  var out = document.getElementById('copy-status');
+  if (!btn) return;
+  btn.addEventListener('click', function () {
+    var email = 'ajithsriraj@gmail.com';
+    function done(ok) { out.textContent = ok ? 'Copied' : 'Copy failed. Select the address above.'; }
+    try {
+      navigator.clipboard.writeText(email).then(function () { done(true); }, function () { done(false); });
+    } catch (e) { done(false); }
+  });
+})();
+</script>
+
 </body>
 </html>
